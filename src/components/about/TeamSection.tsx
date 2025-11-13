@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import ImageViewer from "../ImageViewer";
 import { Separator } from "../ui/separator";

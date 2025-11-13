@@ -9,15 +9,37 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+// Define types for scan progress and API response
+interface ScanProgress {
+  safe: string;
+  dns_http_features: Record<string, unknown> | "loading";
+  ssl_features: Record<string, unknown> | "loading";
+  extracted_scraping_features: Record<string, unknown> | "loading";
+  screenshots: string[] | "loading";
+}
+
+interface ApiResponse {
+  data: {
+    data: {
+      safe?: string;
+      dns_http_features?: Record<string, unknown>;
+      ssl_features?: Record<string, unknown>;
+      scraping_features?: Record<string, unknown>;
+      screenshots?: string[];
+    };
+  };
+}
+
 const TrinetraAIP1 = () => {
   const [url, setUrl] = useState("");
-  const [scanProgress, setScanProgress] = useState<any>(null);
+  const [scanProgress, setScanProgress] = useState<ScanProgress | null>(null);
   const [urlError, setUrlError] = useState<string | undefined>();
   const [isComplete, setIsComplete] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("trinetra_access_token");
+    // If you want to enforce login in future, uncomment below
+    // const token = localStorage.getItem("trinetra_access_token");
     // if (!token) {
     //   toast.error("Please login to use the scanner.");
     //   router.push("/login");
@@ -38,22 +60,24 @@ const TrinetraAIP1 = () => {
       .replace(/_/g, " ")
       .replace(
         /\w\S*/g,
-        (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+        (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
       );
 
-  const transformKeysToProperCase = (obj: any): any => {
+  const transformKeysToProperCase = (obj: unknown): unknown => {
     if (obj === null || obj === undefined) return obj;
     if (Array.isArray(obj)) return obj.map(transformKeysToProperCase);
     if (typeof obj !== "object") return obj;
 
-    return Object.entries(obj).reduce((acc, [key, value]) => {
+    return Object.entries(obj as Record<string, unknown>).reduce<
+      Record<string, unknown>
+    >((acc, [key, value]) => {
       acc[formatKey(key)] = transformKeysToProperCase(value);
       return acc;
-    }, {} as any);
+    }, {});
   };
 
   const scanMutation = useMutation({
-    mutationFn: async (url: string) => {
+    mutationFn: async (scanUrl: string): Promise<boolean> => {
       const token = localStorage.getItem("trinetra_access_token");
       if (!token) {
         toast.error("Please login first.");
@@ -68,9 +92,9 @@ const TrinetraAIP1 = () => {
         "https://apiv2.TrinetraAI.com/check-url/step-5-screenshots",
       ];
 
-      const cleanedUrl = url.trim();
+      const cleanedUrl = scanUrl.trim();
 
-      const initialProgress = {
+      const initialProgress: ScanProgress = {
         safe: "loading",
         dns_http_features: "loading",
         ssl_features: "loading",
@@ -81,56 +105,59 @@ const TrinetraAIP1 = () => {
 
       for (let i = 0; i < stepEndpoints.length; i++) {
         try {
-          const res = await axiosInstance.post(stepEndpoints[i], {
+          const res = (await axiosInstance.post(stepEndpoints[i], {
             url: cleanedUrl,
-          });
+          })) as ApiResponse;
 
           if (i === 0) {
-            setScanProgress((prev: any) => ({
-              ...prev,
-              safe: res.data.data.trim().toLowerCase() || "unknown",
+            const safeStatus =
+              res.data?.data?.safe?.trim().toLowerCase() || "unknown";
+            setScanProgress((prev) => ({
+              ...(prev ?? initialProgress),
+              safe: safeStatus,
             }));
           }
-          if (i === 1) {
-            setScanProgress((prev: any) => ({
-              ...prev,
+          if (i === 1 && res.data.data.dns_http_features) {
+            setScanProgress((prev) => ({
+              ...(prev ?? initialProgress),
               dns_http_features: transformKeysToProperCase(
                 res.data.data.dns_http_features
-              ),
+              ) as Record<string, unknown>,
             }));
           }
-          if (i === 2) {
-            setScanProgress((prev: any) => ({
-              ...prev,
-              ssl_features: res.data.data.ssl_features, // <- only inner object
+          if (i === 2 && res.data.data.ssl_features) {
+            setScanProgress((prev) => ({
+              ...(prev ?? initialProgress),
+              ssl_features: res.data.data.ssl_features as Record<
+                string,
+                unknown
+              >,
             }));
           }
-          if (i === 3) {
-            setScanProgress((prev: any) => ({
-              ...prev,
+          if (i === 3 && res.data.data.scraping_features) {
+            setScanProgress((prev) => ({
+              ...(prev ?? initialProgress),
               extracted_scraping_features: transformKeysToProperCase(
                 res.data.data.scraping_features
-              ), // <- only inner object
+              ) as Record<string, unknown>,
             }));
           }
-          if (i === 4) {
-            setScanProgress((prev: any) => ({
-              ...prev,
+          if (i === 4 && res.data.data.screenshots) {
+            setScanProgress((prev) => ({
+              ...(prev ?? initialProgress),
               screenshots: res.data.data.screenshots || [],
             }));
           }
-        } catch (err) {
-          console.error(`Step ${i + 1} failed`, err);
+        } catch (error) {
+          console.error(`Step ${i + 1} failed`, error);
         }
       }
 
       return true;
     },
-    onSuccess: () => {
-      setIsComplete(true);
-    },
-    onError: (err: any) => {
-      if (err.message !== "Not Authenticated") {
+    onSuccess: () => setIsComplete(true),
+    onError: (error) => {
+      if (error instanceof Error && error.message !== "Not Authenticated") {
         toast.error("Scan failed.");
       }
     },

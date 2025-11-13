@@ -49,6 +49,7 @@ const Navbar = () => {
           setUsername(decoded.username);
           setImageUrl(decoded.imageUrl || "");
         } catch (err) {
+          console.error("Token decode failed:", err);
           localStorage.removeItem("trinetra_access_token");
           localStorage.removeItem("trinetra_refresh_token");
           setUsername("");

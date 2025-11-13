@@ -2,15 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
+import Image from "next/image";
 
 interface FullScreenLoaderProps {
   children: React.ReactNode;
 }
 
 const FullScreenLoader: React.FC<FullScreenLoaderProps> = ({ children }) => {
-  const [stage, setStage] = useState<"show" | "fade" | "slide" | "done">(
-    "show"
-  );
+  const [stage, setStage] = useState<"show" | "fade" | "slide" | "done">("show");
 
   useEffect(() => {
     const t1 = setTimeout(() => setStage("fade"), 2000);
@@ -24,13 +23,11 @@ const FullScreenLoader: React.FC<FullScreenLoaderProps> = ({ children }) => {
     };
   }, []);
 
-  // Variants for loader container
   const containerVariants: Variants = {
     show: { y: 0 },
     slide: { y: "-100%", transition: { duration: 1 } },
   };
 
-  // Variants for image/logo
   const logoVariants: Variants = {
     show: { scale: 1, opacity: 1 },
     fade: { scale: 0.5, opacity: 0, transition: { duration: 1 } },
@@ -53,17 +50,20 @@ const FullScreenLoader: React.FC<FullScreenLoaderProps> = ({ children }) => {
               initial="show"
               animate={stage === "fade" ? "fade" : "show"}
             >
-              <img
+              {/* ✅ Replaced <img> with Next.js <Image /> */}
+              <Image
                 src="/TrinetraAIdigitallogowhite.png"
                 alt="TrinetraAI Loader"
-                className="w-full h-auto"
+                width={500}
+                height={500}
+                priority
+                className="w-full h-auto object-contain"
               />
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Page Content */}
       <motion.div
         className={`min-h-screen transition-opacity duration-700 ${
           stage === "done" ? "opacity-100" : "opacity-0 pointer-events-none"

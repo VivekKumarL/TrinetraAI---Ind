@@ -4,6 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Star, ArrowLeft, ArrowRight } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+import Image from "next/image";
 import "swiper/css";
 
 interface Testimonial {
@@ -20,11 +22,13 @@ interface TestimonialsProps {
 }
 
 const TestimonialsCarousel: React.FC<TestimonialsProps> = ({ testimonials }) => {
-  const swiperRef = useRef<any>(null);
+  const swiperRef = useRef<SwiperType | null>(null);
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-16 relative">
-      <h2 className="text-3xl font-bold text-center mb-10">What Our Customers Say</h2>
+      <h2 className="text-3xl font-bold text-center mb-10">
+        What Our Customers Say
+      </h2>
 
       <div className="relative">
         <Swiper
@@ -43,18 +47,20 @@ const TestimonialsCarousel: React.FC<TestimonialsProps> = ({ testimonials }) => 
             delay: 2500,
             disableOnInteraction: false,
           }}
-          loop={true}
-          speed={800} // <-- smoother transition speed
+          loop
+          speed={800}
         >
           {testimonials.map(({ id, name, role, avatar, quote, rating }) => (
             <SwiperSlide key={id}>
               <Card className="h-[380px] flex flex-col justify-between p-6 shadow-lg transition-all duration-300">
                 <CardContent className="flex flex-col items-center">
                   {avatar ? (
-                    <img
+                    <Image
                       src={avatar}
                       alt={`${name} avatar`}
-                      className="w-16 h-16 rounded-full object-cover mb-4"
+                      width={64}
+                      height={64}
+                      className="rounded-full object-cover mb-4"
                     />
                   ) : (
                     <div className="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 uppercase font-bold mb-4">
@@ -74,7 +80,9 @@ const TestimonialsCarousel: React.FC<TestimonialsProps> = ({ testimonials }) => 
                         key={i}
                         size={18}
                         className={`${
-                          i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                          i < rating
+                            ? "fill-yellow-400 text-yellow-400"
+                            : "text-gray-300"
                         }`}
                       />
                     ))}
@@ -89,16 +97,16 @@ const TestimonialsCarousel: React.FC<TestimonialsProps> = ({ testimonials }) => 
           ))}
         </Swiper>
 
-        {/* Navigation Buttons inside carousel */}
+        {/* Navigation Buttons */}
         <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 flex gap-4">
           <button
-            onClick={() => swiperRef.current.slidePrev()}
+            onClick={() => swiperRef.current?.slidePrev()}
             className="rounded-full p-3 bg-primary-foreground shadow hover:bg-gray-100 hover:text-black transition"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <button
-            onClick={() => swiperRef.current.slideNext()}
+            onClick={() => swiperRef.current?.slideNext()}
             className="rounded-full p-3 bg-primary-foreground shadow hover:bg-gray-100 hover:text-black transition"
           >
             <ArrowRight className="w-5 h-5" />
