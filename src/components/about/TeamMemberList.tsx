@@ -84,12 +84,13 @@ const teamMembers = [
 ];
 
 export default function TeamMemberList() {
+   const [open, setOpen] = useState(false);
   return (
     <div className="max-w-7xl mx-auto px-4 py-20">
       <h2 className="text-3xl font-bold mb-6">Meet Our Team</h2>
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {teamMembers.map((member, index) => {
-          const [open, setOpen] = useState(false);
+         
 
           return (
             <Popover key={index} open={open} onOpenChange={setOpen}>

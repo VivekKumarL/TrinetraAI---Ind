@@ -23,11 +23,18 @@ export default function RegisterForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutate(formData);
+    mutate(formData); // ✅ Works perfectly with correct typing now
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-sm mx-auto">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 max-w-sm mx-auto p-4 bg-white dark:bg-gray-900 rounded-2xl shadow-md"
+    >
+      <h2 className="text-2xl font-semibold text-center mb-2 text-gray-800 dark:text-gray-100">
+        Create Account
+      </h2>
+
       <Input
         name="username"
         placeholder="Full Name"
@@ -35,6 +42,7 @@ export default function RegisterForm() {
         onChange={handleChange}
         required
       />
+
       <Input
         name="phone"
         type="tel"
@@ -43,6 +51,7 @@ export default function RegisterForm() {
         onChange={handleChange}
         required
       />
+
       <Input
         name="email"
         type="email"
@@ -51,6 +60,7 @@ export default function RegisterForm() {
         onChange={handleChange}
         required
       />
+
       <Input
         name="password"
         type="password"
@@ -59,6 +69,7 @@ export default function RegisterForm() {
         onChange={handleChange}
         required
       />
+
       <Input
         name="confirmPassword"
         type="password"
@@ -67,13 +78,21 @@ export default function RegisterForm() {
         onChange={handleChange}
         required
       />
-      <Button type="submit" disabled={isPending}>
+
+      <Button
+        type="submit"
+        disabled={isPending}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-2 font-medium"
+      >
         {isPending ? "Registering..." : "Register"}
       </Button>
 
-      {isSuccess && <p className="text-green-600">Registration successful!</p>}
+      {isSuccess && (
+        <p className="text-green-600 text-center">Registration successful!</p>
+      )}
+
       {isError && (
-        <p className="text-red-600">
+        <p className="text-red-600 text-center">
           {(error as any)?.response?.data?.message || "Something went wrong"}
         </p>
       )}

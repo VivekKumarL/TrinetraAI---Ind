@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import MenuItems from "./MenuItems";
 
 const menuItems = [
   { label: "Product", href: "/" },

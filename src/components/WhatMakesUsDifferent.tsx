@@ -10,7 +10,7 @@ import {
   DialogDescription,
   DialogClose,
 } from "@/components/ui/dialog";
-import { X, Plus, ArrowRight, ChevronRight } from "lucide-react";
+import { X, Plus, ChevronRight } from "lucide-react";
 
 // Card item type
 type CardItem = {

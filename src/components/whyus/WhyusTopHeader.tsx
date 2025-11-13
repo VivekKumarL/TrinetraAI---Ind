@@ -11,7 +11,7 @@ const WhyusTopHeader = () => {
         <p className="text-lg text-muted-foreground mt-2">
           Cyber threats are evolving faster than ever, and traditional security
           solutions are struggling to keep up. TrinetraAI is not just another
-          cybersecurity tool—it's a revolutionary AI-powered security ecosystem
+          cybersecurity tool—it&apos;s a revolutionary AI-powered security ecosystem
           designed to detect, analyze, and neutralize threats before they
           strike.
         </p>

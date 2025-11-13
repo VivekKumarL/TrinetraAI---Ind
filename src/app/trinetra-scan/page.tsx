@@ -1,14 +1,13 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useState, useEffect } from "react";
-import axiosInstance from "@/lib/axiosInstance";
 import Header from "@/components/p1/Header";
-import ScanForm from "@/components/p1/ScanForm";
 import ResultModal from "@/components/p1/ResultModal";
+import ScanForm from "@/components/p1/ScanForm";
+import axiosInstance from "@/lib/axiosInstance";
 import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const TrinetraAIP1 = () => {
   const [url, setUrl] = useState("");
