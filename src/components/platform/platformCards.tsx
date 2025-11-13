@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -7,9 +8,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Club, ShieldCheck, X } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { Club, ShieldCheck, X } from "lucide-react";
 
 const platformCards = [
   {
@@ -33,8 +34,7 @@ const platformCards = [
     icon: <ShieldCheck className="w-7 h-7 text-[#5D2DFD]" />,
     text: "What We Offer",
     dialogTitle: "What We Offer",
-    topPara:
-      "Our next-generation solutions are designed to safeguard your digital world:",
+    topPara: "Our next-generation solutions are designed to safeguard your digital world:",
     points: [
       "AI-Powered Phishing Defense: Blocks malicious URLs in real time.",
       "Smart Web Penetration Testing: Uncovers vulnerabilities like XSS and SQL Injection with precision.",
@@ -108,21 +108,21 @@ const PlatformCards = () => {
       {platformCards.map((card) => (
         <Card
           key={card.id}
-          className="hover:shadow-lg transition-all rounded-2xl border border-gray-200"
+          className="hover:shadow-lg transition-all rounded-2xl border border-gray-200 dark:border-gray-700"
         >
           <CardContent className="p-6 flex flex-col gap-6">
             {/* Top Icon */}
             <div className="flex items-center mt-2">
-              {card.icon ? (
-                card.icon
-              ) : (
-                <img
+              {typeof card.icon === "string" ? (
+                <Image
                   src={card.icon}
                   alt="icon"
                   width={30}
                   height={30}
-                  className="mr-3 pt-1 pb-6"
+                  className="mr-3 pt-1 pb-6 object-contain"
                 />
+              ) : (
+                card.icon
               )}
             </div>
 
@@ -133,7 +133,7 @@ const PlatformCards = () => {
               </span>
             </div>
 
-            {/* Read More Button + Dialog */}
+            {/* Read More Dialog */}
             <Dialog>
               <DialogTrigger asChild>
                 <span className="text-sm text-muted-foreground cursor-pointer hover:underline">
@@ -147,7 +147,7 @@ const PlatformCards = () => {
                   <DialogTitle>{card.dialogTitle}</DialogTitle>
                 </VisuallyHidden>
 
-                {/* Custom Visible Title and Close */}
+                {/* Visible Title + Close Button */}
                 <div className="flex justify-between items-center mb-4">
                   <h4 className="text-lg font-semibold">{card.dialogTitle}</h4>
                   <DialogTrigger asChild>
@@ -157,7 +157,7 @@ const PlatformCards = () => {
                   </DialogTrigger>
                 </div>
 
-                {/* Modal Content */}
+                {/* Dialog Content */}
                 <div className="space-y-4 text-sm text-muted-foreground">
                   {card.topPara && <p>{card.topPara}</p>}
 

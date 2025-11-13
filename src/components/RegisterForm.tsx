@@ -4,9 +4,24 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRegisterUser } from "@/app/hooks/useRegister";
+import { AxiosError } from "axios"; // ✅ Import for proper typing
+
+interface RegisterFormData {
+  username: string;
+  phone: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  fcmToken: string;
+}
+
+interface ErrorResponse {
+  message?: string;
+  error?: string;
+}
 
 export default function RegisterForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<RegisterFormData>({
     username: "",
     phone: "",
     email: "",
@@ -21,10 +36,15 @@ export default function RegisterForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate(formData); // ✅ Works perfectly with correct typing now
+    mutate(formData);
   };
+
+  const errorMessage =
+    (error as AxiosError<ErrorResponse>)?.response?.data?.message ||
+    (error as AxiosError<ErrorResponse>)?.response?.data?.error ||
+    "Something went wrong";
 
   return (
     <form
@@ -91,11 +111,7 @@ export default function RegisterForm() {
         <p className="text-green-600 text-center">Registration successful!</p>
       )}
 
-      {isError && (
-        <p className="text-red-600 text-center">
-          {(error as any)?.response?.data?.message || "Something went wrong"}
-        </p>
-      )}
+      {isError && <p className="text-red-600 text-center">{errorMessage}</p>}
     </form>
   );
 }
