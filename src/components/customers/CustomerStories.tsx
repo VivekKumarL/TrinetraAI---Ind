@@ -1,7 +1,6 @@
 "use client"
 
 import { ArrowUpRightIcon, StarIcon, UsersIcon, HeartIcon } from "lucide-react"
-import Image from "next/image"
 
 const cards = [
   {

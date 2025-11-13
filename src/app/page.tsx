@@ -1,12 +1,9 @@
-import CardList from "@/components/CardList";
-import PlanningSection from "@/components/PlanningSection";
 import HeroSection from "@/components/HeroSection";
-import TodoList from "@/components/TodoList";
+import PlanningSection from "@/components/PlanningSection";
+import Prefooter from "@/components/Prefooter";
 import CustomersSection from "@/components/ui/CustomersSection";
 import WhatMakesUsDifferent from "@/components/WhatMakesUsDifferent";
 import WorkflowSection from "@/components/WorkFlowSection";
-import Prefooter from "@/components/Prefooter";
-import Footer from "@/components/Footer";
 
 const Homepage = () => {
   return (

@@ -19,7 +19,7 @@ export default function ContactCards() {
 
           <CardContent>
             <p className="text-muted-foreground">
-              Have a question? Send us an email and we'll get back to you within 24 hours.
+              Have a question? Send us an email and we&apos;ll get back to you within 24 hours.
             </p>
           </CardContent>
 

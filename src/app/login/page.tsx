@@ -6,9 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import Link from "next/link"; // ← import Link
+import Link from "next/link";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -16,17 +16,14 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post(
-        "https://apiv2.TrinetraAI.com/user/login-with-username-password",
-        {
-          username,
-          password,
-        }
-      );
+      const res = await axios.post("https://apiv2.TrinetraAI.com/user/login-with-username-password", {
+        username,
+        password,
+      });
 
       console.log("Login response:", res.data);
 
@@ -43,7 +40,8 @@ export default function Login() {
       } else {
         toast.error("Token missing in response");
       }
-    } catch (err: any) {
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ msg?: string }>;
       toast.error(err.response?.data?.msg || "Login failed");
     } finally {
       setLoading(false);
@@ -70,6 +68,7 @@ export default function Login() {
                 disabled={loading}
               />
             </div>
+
             <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
               <Input
@@ -87,7 +86,6 @@ export default function Login() {
             </Button>
           </form>
 
-          {/* Register link */}
           <p className="text-sm text-center text-gray-500">
             Don&apos;t have an account?{" "}
             <Link

@@ -1,6 +1,5 @@
 import CustomersHeader from "@/components/customers/CustomersHeader";
 import CustomerStats from "@/components/customers/CustomerStats";
-import CustomerStories from "@/components/customers/CustomerStories";
 import CustomerTabs from "@/components/customers/CustomerTabs";
 import Testimonials from "@/components/customers/Testimonials";
 

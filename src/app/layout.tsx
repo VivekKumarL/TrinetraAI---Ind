@@ -26,7 +26,8 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "TrinetraAI",
-  description: "TrinetraAI scans your website for vulnerabilities & detects live attacks in real-time. Get instant alerts & detailed security reports.AI-driven web security: Find flaws, stop attacks, stay protected. TrinetraAI – your website’s third eye.",
+  description:
+    "TrinetraAI scans your website for vulnerabilities & detects live attacks in real-time. Get instant alerts & detailed security reports. AI-driven web security: Find flaws, stop attacks, stay protected. TrinetraAI – your website’s third eye.",
 };
 
 export default function RootLayout({
@@ -34,11 +35,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const defaultOpen = false;
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased flex`}
       >
         <QueryProvider>
           <ThemeProvider

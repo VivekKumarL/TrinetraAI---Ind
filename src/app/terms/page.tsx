@@ -16,10 +16,10 @@ export default function TermsOfServicePage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
           <p className="text-base text-muted-foreground">
-            Welcome to TrinetraAI ("we," "us," or "our"). These Terms and
-            Conditions ("Terms") govern your access to and use of our services,
+            Welcome to TrinetraAI . These Terms and
+            Conditions Terms govern your access to and use of our services,
             including the TrinetraAI website, mobile application, and browser
-            extension (collectively, the "Services"). By accessing or using the
+            extension . By accessing or using the
             Services, you agree to be bound by these Terms. If you do not agree
             with these Terms, you must refrain from using the Services.
           </p>
@@ -173,7 +173,7 @@ export default function TermsOfServicePage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">10. Disclaimers</h2>
           <p className="text-base text-muted-foreground">
-            Services are provided "as is" without warranties. We do not
+            Services are provided without warranties. We do not
             guarantee scan result accuracy, uninterrupted access, or complete
             security. Use at your own risk.
           </p>

@@ -7,17 +7,17 @@ export default function PrivacyPolicyPage() {
     <div className="py-16 px-4 max-w-3xl mx-auto">
       <h1 className="text-4xl font-bold text-[#5D2DFD] mb-6">Privacy Policy</h1>
       <p className="text-muted-foreground text-base mb-10">
-        Last updated: June 4, 2025
+        Last updated: Dec 13, 2025
       </p>
 
       <div className="space-y-10">
         <section>
           <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
           <p className="text-base text-muted-foreground">
-            Welcome to TrinetraAI ("we," "us," or "our"). We are committed to
+            Welcome to TrinetraAI . We are committed to
             protecting your privacy and being transparent about how we collect,
             use, and safeguard your data when you access our website, Android
-            app, and browser extension ("Services"). By using our Services, you
+            app, and browser extension. By using our Services, you
             consent to the practices outlined in this Privacy Policy.
           </p>
         </section>

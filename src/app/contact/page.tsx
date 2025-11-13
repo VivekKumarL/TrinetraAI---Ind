@@ -1,6 +1,6 @@
 import ContactCards from "@/components/contact/ContactCards";
 import ContactThirdSection from "@/components/contact/ContactThirdSection";
-import { CircleCheck, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 
 const Contact = () => {
   return (

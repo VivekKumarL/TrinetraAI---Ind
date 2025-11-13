@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, Phone, Mail, Building2 } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
 
 const ContactThirdSection = () => {
   return (
