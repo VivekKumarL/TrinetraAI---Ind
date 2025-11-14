@@ -39,9 +39,12 @@ const TrinetraAIP1 = () => {
   };
 
   const formatKey = (key: string) =>
-    key.replace(/_/g, " ").replace(/\w\S*/g, (txt) => 
-      txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
-    );
+    key
+      .replace(/_/g, " ")
+      .replace(
+        /\w\S*/g,
+        (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
+      );
 
   const transformKeysToProperCase = (obj: unknown): unknown => {
     if (!obj || typeof obj !== "object") return obj;
@@ -58,22 +61,9 @@ const TrinetraAIP1 = () => {
 
   const scanMutation = useMutation({
     mutationFn: async (scanUrl: string): Promise<boolean> => {
-      const token = localStorage.getItem("trinetra_access_token");
-      if (!token) {
-        toast.error("Please login first.");
-        throw new Error("Not Authenticated");
-      }
-
-      const endpoints = [
-        "https://apiv2.TrinetraAI.com/check-url/step-1",
-        "https://apiv2.TrinetraAI.com/check-url/step-2",
-        "https://apiv2.TrinetraAI.com/check-url/step-3",
-        "https://apiv2.TrinetraAI.com/check-url/step-4",
-        "https://apiv2.TrinetraAI.com/check-url/step-5-screenshots",
-      ];
-
       const cleanedUrl = scanUrl.trim();
 
+      // Initial loading state
       const initial: ScanProgress = {
         safe: "loading",
         dns_http_features: "loading",
@@ -83,57 +73,39 @@ const TrinetraAIP1 = () => {
       };
       setScanProgress(initial);
 
-      for (let i = 0; i < endpoints.length; i++) {
-        try {
-          const res = (await axiosInstance.post(endpoints[i], {
-            url: cleanedUrl,
-          })) as ApiResponse;
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-          const data = res.data.data;
+      // Mock response based on URL (demo)
+      const mockSafeSites = ["https://example.com", "https://safe-site.com"];
+      const safe = mockSafeSites.some((site) => cleanedUrl.startsWith(site))
+        ? "safe"
+        : "unsafe";
 
-          if (i === 0) {
-            const safeStatus = data.safe?.trim().toLowerCase() ?? "unknown";
-            setScanProgress((prev) => ({ ...(prev ?? initial), safe: safeStatus }));
-          }
-
-          if (i === 1 && data.dns_http_features) {
-            setScanProgress((prev) => ({
-              ...(prev ?? initial),
-              dns_http_features: transformKeysToProperCase(data.dns_http_features) as Record<string, unknown>,
-            }));
-          }
-
-          if (i === 2 && data.ssl_features) {
-            setScanProgress((prev) => ({
-              ...(prev ?? initial),
-              ssl_features: data.ssl_features,
-            }));
-          }
-
-          if (i === 3 && data.scraping_features) {
-            setScanProgress((prev) => ({
-              ...(prev ?? initial),
-              extracted_scraping_features: transformKeysToProperCase(data.scraping_features) as Record<
-                string,
-                unknown
-              >,
-            }));
-          }
-
-        } catch (err) {
-          console.error(`Step ${i + 1} failed`, err);
-        }
-      }
+      setScanProgress({
+        safe,
+        dns_http_features:
+          safe === "safe"
+            ? {
+                "DNS Lookup": "8.8.8.8",
+                "HTTP Version": "HTTP/2",
+                "Secure Connection": true,
+              }
+            : {},
+        ssl_features:
+          safe === "safe"
+            ? { "Certificate Authority": "Let's Encrypt", "SSL Grade": "A+" }
+            : {},
+        extracted_scraping_features:
+          safe === "safe"
+            ? { "Meta Title": "Example Site", "Number of Links": 42 }
+            : {},
+        screenshots:
+          safe === "safe" ? ["screenshot1.png", "screenshot2.png"] : [],
+      });
 
       return true;
     },
-
     onSuccess: () => setIsComplete(true),
-    onError: (error) => {
-      if (error instanceof Error && error.message !== "Not Authenticated") {
-        toast.error("Scan failed.");
-      }
-    },
   });
 
   const handleScan = () => {
@@ -142,7 +114,8 @@ const TrinetraAIP1 = () => {
     setIsComplete(false);
 
     if (!url) return setUrlError("URL cannot be empty");
-    if (!isValidUrl(url)) return setUrlError("Invalid URL. Include http:// or https://");
+    if (!isValidUrl(url))
+      return setUrlError("Invalid URL. Include http:// or https://");
 
     scanMutation.mutate(url);
   };
@@ -158,14 +131,19 @@ const TrinetraAIP1 = () => {
       <Header />
 
       <div className="max-w-3xl mx-auto px-4">
-        <ScanForm url={url} onChange={setUrl} onSubmit={handleScan} urlError={urlError} />
+        <ScanForm
+          url={url}
+          onChange={setUrl}
+          onSubmit={handleScan}
+          urlError={urlError}
+        />
       </div>
 
       {(scanProgress || isComplete) && (
         <ResultModal
-          result={scanProgress}
-          safe={scanProgress?.safe}
-          onClose={closeModal}
+          result={scanProgress} // <-- use scanProgress
+          url={url} // <-- use entered URL
+          onClose={closeModal} // <-- use modal close handler
         />
       )}
     </div>

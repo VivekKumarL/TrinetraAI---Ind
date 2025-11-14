@@ -118,9 +118,7 @@ export default function Footer() {
             Contact
           </h4>
           <p className="mb-1 font-semibold">TrinetraAI Private Limited</p>
-          <p className="mb-1">
-            
-          </p>
+          <p className="mb-1"></p>
           <p className="mb-1"> Gurugram, Haryana, India</p>
           <p className="mb-1">India</p>
           <p className="mb-1 font-bold">Head Office</p>
@@ -132,6 +130,7 @@ export default function Footer() {
         &copy; {new Date().getFullYear()} TrinetraAI Pvt Ltd. All rights
         reserved.
       </div>
+      <div>Made with ❤️ by Vivek Kumar</div>
     </footer>
   );
 }

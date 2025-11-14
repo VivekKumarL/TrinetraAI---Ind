@@ -10,102 +10,89 @@ import {
 } from "@/components/ui/table";
 import { ResultData } from "@/types/resultData";
 
-// NestedRecord type for table rendering
-type NestedRecord = {
-  [key: string]: string | number | boolean | NestedRecord | undefined;
-};
-
-// Helper to convert unknown objects into NestedRecord safely
-const toNestedRecord = (obj: Record<string, unknown>): NestedRecord => {
-  const result: NestedRecord = {};
-
-  Object.entries(obj).forEach(([key, value]) => {
-    if (
-      typeof value === "string" ||
-      typeof value === "number" ||
-      typeof value === "boolean"
-    ) {
-      result[key] = value;
-    } else if (typeof value === "object" && value !== null && !Array.isArray(value)) {
-      result[key] = toNestedRecord(value as Record<string, unknown>);
-    } else {
-      result[key] = String(value); // fallback for unknown or array values
-    }
-  });
-
-  return result;
-};
-
-export interface Screenshot {
-  id?: string;
-  url?: string;
-}
-
 interface ResultTablesProps {
-  result: ResultData | null | undefined;
+  result: ResultData | null;
+  safeStatus: "safe" | "unsafe" | "unknown"; // new prop
 }
 
-const ResultTables: React.FC<ResultTablesProps> = ({ result }) => {
-  if (!result) return null;
+// Static demo data to show if site is safe
+const staticDnsHttpFeatures = {
+  "DNS Lookup": "8.8.8.8",
+  "HTTP Version": "HTTP/2",
+  "Secure Connection": true,
+};
 
-  const renderTableFromObject = (data: NestedRecord): JSX.Element => (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Key</TableHead>
-          <TableHead>Value</TableHead>
+const staticSslFeatures = {
+  "Certificate Authority": "Let's Encrypt",
+  "Valid From": "2025-01-01",
+  "Valid To": "2026-01-01",
+  "SSL Grade": "A+",
+};
+
+const staticScrapingFeatures = {
+  "Meta Title": "Example Site",
+  "Meta Description": "This is a static demo description",
+  "Number of Links": 42,
+};
+
+// Helper to render nested objects
+const renderTableFromObject = (data: Record<string, any>): JSX.Element => (
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Key</TableHead>
+        <TableHead>Value</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {Object.entries(data).map(([key, value]) => (
+        <TableRow key={key}>
+          <TableCell className="font-medium">{key}</TableCell>
+          <TableCell>
+            {typeof value === "object" && value !== null
+              ? renderTableFromObject(value)
+              : value?.toString()}
+          </TableCell>
         </TableRow>
-      </TableHeader>
-      <TableBody>
-        {Object.entries(data).map(([key, value]) => (
-          <TableRow key={key}>
-            <TableCell className="font-medium">{key}</TableCell>
-            <TableCell>
-              {typeof value === "object" && value !== null
-                ? renderTableFromObject(value as NestedRecord)
-                : value?.toString()}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
+      ))}
+    </TableBody>
+  </Table>
+);
 
+const ResultTables: React.FC<ResultTablesProps> = ({ result, safeStatus }) => {
+  if (safeStatus === "unsafe") {
+    return (
+      <div className="text-red-600 font-semibold text-lg">
+        Cannot display site data – site is malicious ❌
+      </div>
+    );
+  }
+
+  // If safe or unknown, show static data or loading placeholders
   return (
     <div className="space-y-8">
-      {/* Step-2: DNS/HTTP Features */}
-      {result.dns_http_features && result.dns_http_features !== "loading" && (
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Step-2: DNS/HTTP Features</h3>
-          {renderTableFromObject(toNestedRecord(result.dns_http_features))}
-        </div>
-      )}
-      {result.dns_http_features === "loading" && (
-        <p className="text-sm text-gray-500">Loading Step-2: DNS/HTTP Features...</p>
-      )}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Step-2: DNS/HTTP Features</h3>
+        {safeStatus === "safe" ? renderTableFromObject(staticDnsHttpFeatures) : <p className="text-sm text-gray-500">Loading DNS/HTTP features...</p>}
+      </div>
 
-      {/* Step-3: SSL Features */}
-      {result.ssl_features && result.ssl_features !== "loading" && (
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Step-3: SSL Features</h3>
-          {renderTableFromObject(toNestedRecord(result.ssl_features))}
-        </div>
-      )}
-      {result.ssl_features === "loading" && (
-        <p className="text-sm text-gray-500">Loading Step-3: SSL Features...</p>
-      )}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Step-3: SSL Features</h3>
+        {safeStatus === "safe" ? renderTableFromObject(staticSslFeatures) : <p className="text-sm text-gray-500">Loading SSL features...</p>}
+      </div>
 
-      {/* Step-4: Scraping Features */}
-      {result.extracted_scraping_features &&
-        result.extracted_scraping_features !== "loading" && (
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Step-4: Scraping Features</h3>
-            {renderTableFromObject(toNestedRecord(result.extracted_scraping_features))}
-          </div>
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Step-4: Scraping Features</h3>
+        {safeStatus === "safe" ? renderTableFromObject(staticScrapingFeatures) : <p className="text-sm text-gray-500">Loading scraping features...</p>}
+      </div>
+
+      <div>
+        {safeStatus === "safe" ? (
+          <p className="text-sm text-gray-500">Screenshots would display here...</p>
+        ) : (
+          <p className="text-sm text-gray-500">Loading screenshots...</p>
         )}
-      {result.extracted_scraping_features === "loading" && (
-        <p className="text-sm text-gray-500">Loading Step-4: Scraping Features...</p>
-      )}
+      </div>
     </div>
   );
 };

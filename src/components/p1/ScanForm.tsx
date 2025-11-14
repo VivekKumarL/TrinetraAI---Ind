@@ -10,14 +10,22 @@ interface ScanFormProps {
   urlError?: string;
 }
 
-const ScanForm: React.FC<ScanFormProps> = ({ url, onChange, onSubmit, urlError }) => {
+const ScanForm: React.FC<ScanFormProps> = ({
+  url,
+  onChange,
+  onSubmit,
+  urlError,
+}) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative sm:w-[420px] mx-auto mt-6">
+    <form
+      onSubmit={handleSubmit}
+      className="relative sm:w-[420px] mx-auto mt-6"
+    >
       <div className="relative">
         <Input
           type="url"
@@ -33,10 +41,11 @@ const ScanForm: React.FC<ScanFormProps> = ({ url, onChange, onSubmit, urlError }
           Scan
         </Button>
       </div>
+      <p className="text-red-600 text-sm mt-2 px-3 py-1 bg-red-100 rounded-md shadow-sm inline-block">
+        For now, just enter a random URL
+      </p>
 
-      {urlError && (
-        <p className="text-red-600 text-sm mt-2 pl-2">{urlError}</p>
-      )}
+      {urlError && <p className="text-red-600 text-sm mt-2 pl-2">{urlError}</p>}
     </form>
   );
 };
