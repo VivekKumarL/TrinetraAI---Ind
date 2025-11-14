@@ -23,13 +23,13 @@ const PlanningSection = () => {
         </p>
       </div>
       {/* Full Width Image */}
-      <div className="w-full">
+      <div className="w-[700px] mx-auto"> {/* width 20rem (~320px) centered */}
         <Image
-          src="/trinetraPoster2.png"
+          src="/dashboardOne.jpg"
           alt="Full Width"
-          width={1200}
-          height={600}
-          className="w-full h-auto rounded-lg object-cover mask-b-from-20% mask-b-to-80% "
+          width={900}
+          height={400}
+          className="w-full h-auto rounded-lg object-cover mask-b-from-20% mask-b-to-80%"
         />
       </div>
 
@@ -48,7 +48,7 @@ const PlanningSection = () => {
               Identify and respond to threats before they attack.
             </p>
             <Image
-               src="/trinetraPoster2.png"
+              src="/realtimeproc.jpg"
               alt="Left Image"
               width={600}
               height={400}
@@ -68,8 +68,9 @@ const PlanningSection = () => {
               Security should be simple and effective, even for non- technical
               users.
             </p>
+            
             <Image
-            src="/trinetraPoster2.png"
+              src="/trinetraPoster2.png"
               alt="Right Image"
               width={600}
               height={400}
@@ -110,13 +111,13 @@ const PlanningSection = () => {
         </div>
 
         {/* Right */}
-        <div>
+        <div className="w-64 h-auto"> {/* width 12rem (~192px) */}
           <Image
-           src="/trinetraPoster2.png"
+            src="/costeff.jpg"
             alt="Side Image"
             width={600}
             height={400}
-            className="w-full h-auto rounded-lg object-cover"
+            className="rounded-lg object-cover w-full h-full"
           />
         </div>
       </div>
