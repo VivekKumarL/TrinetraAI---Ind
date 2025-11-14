@@ -1,60 +1,38 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import ResultTables from "./ResultTables";
 import ScreenshotViewer from "./ScreenshotViewer";
-
-interface Screenshot {
-  id?: string;
-  url?: string;
-}
-
-interface ResultData {
-  screenshots?: Screenshot[] | "loading";
-  [key: string]: unknown;
-}
+import { ResultData } from "@/types/resultData";
 
 interface ResultModalProps {
-  result: ResultData;
+  result: ResultData | null;
   safe: string | undefined;
   onClose: () => void;
 }
 
 const ResultModal: React.FC<ResultModalProps> = ({ result, safe, onClose }) => {
-  // Normalize screenshots for ScreenshotViewer
   const normalizedScreenshots =
     result?.screenshots === "loading"
       ? "loading"
       : Array.isArray(result?.screenshots)
-      ? result.screenshots.map((s) => s.url || "").filter(Boolean)
+      ? result.screenshots.map((s) => (typeof s === "string" ? s : s.url || "")).filter(Boolean)
       : [];
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl sm:max-w-6xl overflow-y-auto max-h-[90vh] p-0">
         <div className="flex items-center justify-between px-6 py-4 border-b">
-          <DialogTitle className="text-2xl font-bold">
-            Scan Progress
-          </DialogTitle>
+          <DialogTitle className="text-2xl font-bold">Scan Progress</DialogTitle>
           <Button variant="ghost" size="icon" onClick={onClose}>
             <X className="h-5 w-5" />
           </Button>
         </div>
 
         <div className="px-6 py-4 space-y-6">
-          {/* Step-1: Safe/Unsafe Status */}
-          {safe === "loading" && (
-            <p className="text-sm text-gray-500">
-              Loading Step-1: Safe Status...
-            </p>
-          )}
+          {safe === "loading" && <p className="text-sm text-gray-500">Loading Step-1: Safe Status...</p>}
 
           {safe && safe !== "loading" && (
             <h2
@@ -66,10 +44,8 @@ const ResultModal: React.FC<ResultModalProps> = ({ result, safe, onClose }) => {
             </h2>
           )}
 
-          {/* Result Tables */}
           <ResultTables result={result} />
 
-          {/* Screenshot Viewer */}
           {normalizedScreenshots && normalizedScreenshots !== "loading" && (
             <ScreenshotViewer screenshots={normalizedScreenshots} />
           )}

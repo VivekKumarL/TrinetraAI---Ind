@@ -2,8 +2,6 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -11,111 +9,50 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { ChevronRightIcon } from "lucide-react";
 
-const cards = [
-  {
-    image: "/trinetraPoster2.png",
-    title: "Slack Integration",
-    desc: "AI-Powered Phishing Detection",
-  },
-  {
-    image: "/trinetraPoster2.png",
-    title: "GitHub Sync",
-    desc: "AI-Based Web Penetration Testing",
-  },
-  {
-    image: "/trinetraPoster2.png",
-    title: "Figma Plugin",
-    desc: "AI-Driven Threat Intelligence & Monitoring",
-  },
-  {
-    image: "/trinetraPoster2.png",
-    title: "Zapier Automations",
-    desc: "Secure Code Analysis",
-  },
-  {
-    image: "/trinetraPoster2.png",
-    title: "Google Calendar",
-    desc: "AI-Powered Cybersecurity API",
-  },
-  // {
-  //   image: "/trinetraPoster2.png",
-  //   title: "Notion Link",
-  //   desc: "Link project docs and tasks from Notion easily.",
-  // },
-  // {
-  //   image: "/trinetraPoster2.png",
-  //   title: "Jira Importer",
-  //   desc: "Migrate issues from Jira with one click.",
-  // },
-  // {
-  //   image: "/trinetraPoster2.png",
-  //   title: "Slack Integration",
-  //   desc: "Get instant project updates directly in your Slack channels.",
-  // },
-];
+interface Card {
+  image: string;
+  title: string;
+  desc: string;
+}
 
-export default function WorkflowCarousel() {
+interface Props {
+  cards: Card[];
+}
+
+const WorkflowCarousel: React.FC<Props> = ({ cards }) => {
   return (
-    <div className="w-full max-w-[1200px] mx-auto">
-      <Carousel className="relative">
-        <CarouselContent className="-ml-8">
-          {cards.map((card, i) => (
+    <div className="relative w-full max-w-6xl mx-auto">
+      <Carousel className="w-full">
+        <CarouselContent>
+          {cards.map((card, idx) => (
             <CarouselItem
-              key={i}
-              className="
-                pl-8 shrink-0
-                basis-full
-                sm:basis-[80%]
-                md:basis-[40%]
-                lg:basis-[28.5%]
-                scroll-snap-start
-              "
+              key={idx}
+              className="md:basis-1/3 sm:basis-1/2 basis-full"
             >
-              <Card>
-                <Image
-                  src={card.image}
-                  alt={card.title}
-                  width={400}
-                  height={300}
-                  className="w-full h-48 object-cover rounded-t-lg"
-                />
-                <CardContent className="space-y-2 p-3">
-                  {/* <h3 className="text-xs font-normal text-muted-foreground">
-                    {card.title}
-                  </h3> */}
-                  <div className="flex justify-between items-center pt-1">
-                    <p className="text-xs leading-[1.5] font-medium w-[12rem]">
-                      {card.desc}
-                    </p>
-                    <Button
-                      variant="link"
-                      className="p-4 text-sm flex items-center border rounded-full"
-                    >
-                      <ChevronRightIcon />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="p-4">
+                <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg text-center">
+                  <Image
+                    src={card.image}
+                    alt={card.title}
+                    width={200}
+                    height={200}
+                    className="mx-auto rounded-xl"
+                  />
+                  <h3 className="text-lg font-semibold mt-4">{card.title}</h3>
+                  <p className="text-gray-500 text-sm mt-2">{card.desc}</p>
+                </div>
+              </div>
             </CarouselItem>
           ))}
         </CarouselContent>
 
-        {/* Navigation Buttons */}
-        <div className="flex justify-center gap-6 mt-6 absolute left-1/2 -translate-x-1/2 -bottom-10">
-          <CarouselPrevious>
-            <Button variant="outline" size="icon" aria-label="Previous">
-              ←
-            </Button>
-          </CarouselPrevious>
-          <CarouselNext>
-            <Button variant="outline" size="icon" aria-label="Next">
-              →
-            </Button>
-          </CarouselNext>
-        </div>
+        {/* Navigation Arrows */}
+        <CarouselPrevious className="left-2" />
+        <CarouselNext className="right-2" />
       </Carousel>
     </div>
   );
-}
+};
+
+export default WorkflowCarousel;
