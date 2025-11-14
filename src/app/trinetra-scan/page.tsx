@@ -9,18 +9,6 @@ import { useState } from "react";
 
 type ScanProgress = ResultData;
 
-interface ApiResponse {
-  data: {
-    data: {
-      safe?: string;
-      dns_http_features?: Record<string, unknown>;
-      ssl_features?: Record<string, unknown>;
-      scraping_features?: Record<string, unknown>;
-      screenshots?: string[];
-    };
-  };
-}
-
 const TrinetraAIP1 = () => {
   const [url, setUrl] = useState("");
   const [scanProgress, setScanProgress] = useState<ScanProgress | null>(null);
@@ -36,26 +24,7 @@ const TrinetraAIP1 = () => {
     }
   };
 
-  const formatKey = (key: string) =>
-    key
-      .replace(/_/g, " ")
-      .replace(
-        /\w\S*/g,
-        (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
-      );
-
-  const transformKeysToProperCase = (obj: unknown): unknown => {
-    if (!obj || typeof obj !== "object") return obj;
-    if (Array.isArray(obj)) return obj.map(transformKeysToProperCase);
-
-    return Object.entries(obj as Record<string, unknown>).reduce(
-      (acc, [key, value]) => {
-        acc[formatKey(key)] = transformKeysToProperCase(value);
-        return acc;
-      },
-      {} as Record<string, unknown>
-    );
-  };
+ 
 
   const scanMutation = useMutation({
     mutationFn: async (scanUrl: string): Promise<boolean> => {

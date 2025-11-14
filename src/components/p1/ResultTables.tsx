@@ -16,7 +16,7 @@ interface ResultTablesProps {
 }
 
 type NestedRecord = {
-  [key: string]: string | number | boolean | NestedRecord | undefined;
+  [key: string]: string | number | boolean | NestedRecord ;
 };
 
 // Static demo data to show if site is safe
@@ -40,7 +40,7 @@ const staticScrapingFeatures = {
 };
 
 // Helper to render nested objects
-const renderTableFromObject = (data: Record<string, any>): JSX.Element => (
+const renderTableFromObject = (data:NestedRecord): JSX.Element => (
   <Table>
     <TableHeader>
       <TableRow>
@@ -53,8 +53,8 @@ const renderTableFromObject = (data: Record<string, any>): JSX.Element => (
         <TableRow key={key}>
           <TableCell className="font-medium">{key}</TableCell>
           <TableCell>
-            {typeof value === "object" && value !== null
-              ? renderTableFromObject(value as NestedRecord)
+             {value && typeof value === "object" && !Array.isArray(value)
+              ? renderTableFromObject(value) // no cast needed
               : value?.toString()}
           </TableCell>
         </TableRow>
