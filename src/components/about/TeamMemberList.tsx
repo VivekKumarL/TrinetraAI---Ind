@@ -56,30 +56,6 @@ const teamMembers = [
     avatar: "/teamprofile.jpg",
     linkedin: "https://linkedin.com/in/meeradesai",
   },
-  {
-    name: "Rohan Patel",
-    position: "Backend Developer",
-    avatar: "/teamprofile.jpg",
-    linkedin: "https://linkedin.com/in/rohanpatel",
-  },
-  {
-    name: "Aarav Sharma",
-    position: "Frontend Engineer",
-    avatar: "/teamprofile.jpg",
-    linkedin: "https://linkedin.com/in/aaravsharma",
-  },
-  {
-    name: "Meera Desai",
-    position: "UI/UX Designer",
-    avatar: "/teamprofile.jpg",
-    linkedin: "https://linkedin.com/in/meeradesai",
-  },
-  {
-    name: "Rohan Patel",
-    position: "Backend Developer",
-    avatar: "/teamprofile.jpg",
-    linkedin: "https://linkedin.com/in/rohanpatel",
-  },
   // add 12 more similarly
 ];
 

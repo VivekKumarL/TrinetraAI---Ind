@@ -12,7 +12,7 @@ const CustomersSection = () => {
       {/* ✅ Replaced <img> with Next.js optimized <Image /> */}
       <div className="mt-8">
         <Image
-          src="/TrinetraAIlogo.gif"
+          src="/Trinetralogo.png"
           width={580}
           height={320}
           alt="TrinetraAI logo"
