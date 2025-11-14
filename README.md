@@ -60,8 +60,7 @@ npm run dev
 ```
 
 ## 🎥 Video Preview
-
-https://github.com/user-attachments/assets/4c9a97e3-62ea-4e2c-bf3c-d0be96cfb64e
+comming soon!
 
 - last updated on 14 Aug 2025
 
