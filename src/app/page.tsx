@@ -16,7 +16,10 @@ const Homepage = () => {
       <div className=" p-4 rounded-lg">
         <CustomersSection />
       </div>
-      <div className="mask-y-from-70% mask-y-to-90% bg-primary-foreground p-4 rounded-lg">
+      <div
+        className="bg-primary-foreground p-4 rounded-lg 
+                md:mask-y-from-70% md:mask-y-to-90%"
+      >
         <WhatMakesUsDifferent />
       </div>
       <div

@@ -56,7 +56,7 @@ export default function Prefooter() {
       >
         <h3
           ref={textRef}
-          className="text-3xl font-semibold mb-2 font-mono tracking-wide"
+          className="text-lg md:text-3xl font-semibold mb-2 font-mono tracking-wide"
         >
           {gibberishText}
         </h3>

@@ -23,7 +23,7 @@ const PlanningSection = () => {
         </p>
       </div>
       {/* Full Width Image */}
-      <div className="w-[700px] mx-auto"> {/* width 20rem (~320px) centered */}
+      <div className="md:w-[700px]  mx-auto"> {/* width 20rem (~320px) centered */}
         <Image
           src="/dashboardOne.jpg"
           alt="Full Width"
@@ -68,7 +68,7 @@ const PlanningSection = () => {
               Security should be simple and effective, even for non- technical
               users.
             </p>
-            
+
             <Image
               src="/trinetraPoster2.png"
               alt="Right Image"
@@ -111,7 +111,7 @@ const PlanningSection = () => {
         </div>
 
         {/* Right */}
-        <div className="w-64 h-auto"> {/* width 12rem (~192px) */}
+        <div className="w-64 h-auto mx-auto md:mx-0">
           <Image
             src="/costeff.jpg"
             alt="Side Image"
