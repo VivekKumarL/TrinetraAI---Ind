@@ -15,6 +15,10 @@ interface ResultTablesProps {
   safeStatus: "safe" | "unsafe" | "unknown"; // new prop
 }
 
+type NestedRecord = {
+  [key: string]: string | number | boolean | NestedRecord | undefined;
+};
+
 // Static demo data to show if site is safe
 const staticDnsHttpFeatures = {
   "DNS Lookup": "8.8.8.8",
@@ -50,7 +54,7 @@ const renderTableFromObject = (data: Record<string, any>): JSX.Element => (
           <TableCell className="font-medium">{key}</TableCell>
           <TableCell>
             {typeof value === "object" && value !== null
-              ? renderTableFromObject(value)
+              ? renderTableFromObject(value as NestedRecord)
               : value?.toString()}
           </TableCell>
         </TableRow>
@@ -59,7 +63,7 @@ const renderTableFromObject = (data: Record<string, any>): JSX.Element => (
   </Table>
 );
 
-const ResultTables: React.FC<ResultTablesProps> = ({ result, safeStatus }) => {
+const ResultTables: React.FC<ResultTablesProps> = ({ safeStatus }) => {
   if (safeStatus === "unsafe") {
     return (
       <div className="text-red-600 font-semibold text-lg">

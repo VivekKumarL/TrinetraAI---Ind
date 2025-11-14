@@ -3,11 +3,9 @@
 import Header from "@/components/p1/Header";
 import ResultModal from "@/components/p1/ResultModal";
 import ScanForm from "@/components/p1/ScanForm";
-import axiosInstance from "@/lib/axiosInstance";
+import { ResultData } from "@/types/resultData";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { toast } from "sonner";
-import { ResultData } from "@/types/resultData";
 
 type ScanProgress = ResultData;
 
